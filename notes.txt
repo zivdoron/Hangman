@@ -1,0 +1,2 @@
+number of tries doesn't save
+word completion doesn't grant victory
