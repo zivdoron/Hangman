@@ -16,6 +16,9 @@ class PlayerInput(BasePlayerInput) :
     def GetGuess(self):
         print("Guess a letter")
         letter = input()
+        if letter.__len__() == 0:
+            self.GetGuess()
+            return
         WordGuesser.GetGuess(letter.lower()[0])
 
     def AddWord(word):
@@ -54,12 +57,14 @@ class PlayerInput(BasePlayerInput) :
 
     def chooseKeyMapping(self, retryCount):
         self.showKeyMapping()
-        self.inputForChangingMap(retryCount)
+        self._inputForChangingMap(retryCount)
 
-    @classmethod
-    def inputForChangingMap(cls, maxRetries, count: int = 0):
+
+    def _inputForChangingMap(self, maxRetries, count: int = 0):
         print("Please choose your desired keymaps")
-        if not cls.assignkeymaps(input()) and count <= maxRetries : cls.inputForChangingMap(maxRetries, count+1)
+        inp = input()
+        if not self.assignkeymaps(inp) and count <= maxRetries :
+            self._inputForChangingMap(maxRetries, count + 1)
         if(count > maxRetries) :
             print("Fine... I'll stick with standard then.")
-            cls.assignkeymaps("normal")
+            self.assignkeymaps("normal")
