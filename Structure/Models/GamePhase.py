@@ -54,7 +54,7 @@ class Game:
         print(DEFAULT_SPACING)
         self.showRules()
         print(DEFAULT_SPACING)
-        HangingShape.instance.SetDefaultNumOfTries()
+        HangingShape.instance.setDefaultNumOfAttempts(4)
 
         print("Let's begin the game!")
         WordGuesser.RandomizeANewWord()

@@ -1,9 +1,12 @@
+import operator
+
+
 class HangingShape :
     instance: 'HangingShape' = None
 
     #add shape (composition)
-    numOfTries = 0
-    DefaultNumOfTries = 7
+    numOfAttempts = 0
+    DefaultNumOfAttempts = 7
 
     def __init__(self):
         if HangingShape.instance is None :
@@ -16,34 +19,28 @@ class HangingShape :
 
     def RenderNext(self, isCorrect : bool):
         if(not isCorrect):
-            int(self.instance.numOfTries).__sub__(1)
-            print("number of tries left is " + str(self.numOfTries))
+            self.instance.numOfAttempts -= 1
+            print("number of Attempts left is " + str(self.numOfAttempts))
 
-    def ResetView(self, numOfTries = DefaultNumOfTries):
-        self.instance.numOfTries = HangingShape.DefaultNumOfTries
+    def ResetView(self, numOfAttempts = DefaultNumOfAttempts):
+        self.instance.numOfAttempts = HangingShape.DefaultNumOfAttempts
 
-    def ResetNumOfTries(self, num):
-        self.instance.numOfTries = num
+    def ResetNumOfAttempts(self, num):
+        self.instance.numOfAttempts = num
         return self
 
-    def SetDefaultNumOfTries(self):
-        print("Please choose your desired number of tries")
-        num = input()
-        if(num.isnumeric()):
-            HangingShape.DefaultNumOfTries = num
-            self.instance.numOfTries = HangingShape.DefaultNumOfTries
-        else:
-            print("You didn't type a number. Please choose one.")
-            self.setDefaultNumOfTries(input(), 0)
+    def setDefaultNumOfAttempts(self, iter):
+        print("Please choose your desired number of attempts")
+        for i in range(iter):
+            num = input()
+            if num.isnumeric():
+                HangingShape.DefaultNumOfAttempts = int(num)
+                self.instance.numOfAttempts = HangingShape.DefaultNumOfAttempts
+                return True
+            elif iter != i:
+                print("You didn't type a number. Please choose one.")
+            else:
+                print("Setting a default num of attempts")
+                self.instance.numOfAttempts = HangingShape.DefaultNumOfAttempts
 
-        return self
-
-
-    def setDefaultNumOfTries(self, num, iter):
-        print("Please choose your desired number of tries")
-        if (num.isnumeric()):
-            self.DefaultNumOfTries = num
-        elif(iter < 4):
-            print("You didn't type a number. Please choose one.")
-            iter+=1
-            self.setDefaultNumOfTries(input(), iter)
+        return False
