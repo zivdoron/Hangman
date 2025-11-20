@@ -31,12 +31,12 @@ class WordGuesser:
     @staticmethod
     def CheckWin():
         lettersInWord = list(WordGuesser.chosenWord)
-        return all(item in WordGuesser.guessedLetters for item in lettersInWord) and int(HangingShape.instance.numOfTries) > 0
+        return all(item in WordGuesser.guessedLetters for item in lettersInWord) and int(HangingShape.instance.numOfAttempts) > 0
 #    lettersInWord.all(lambda l: WordGuesser.guessedLetters.__contains__(l))
 
     @staticmethod
     def CheckLose():
-        return int(HangingShape.instance.numOfTries) == 0
+        return int(HangingShape.instance.numOfAttempts) == 0
     @staticmethod
     def KnownLetters():
         lettersInWord = list(WordGuesser.chosenWord)
