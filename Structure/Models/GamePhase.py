@@ -57,7 +57,7 @@ class Game:
         print(DEFAULT_SPACING)
         self.showRules()
         print(DEFAULT_SPACING)
-        HangingShape.instance.SetDefaultNumOfTries()
+        HangingShape.instance.setDefaultNumOfAttempts(5) #player choice needed
         while self.gamePhase != GlobalPhase.InGame:
             self.IngameLoop(pInput)
 

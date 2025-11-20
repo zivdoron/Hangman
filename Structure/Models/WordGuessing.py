@@ -18,7 +18,7 @@ class WordGuesser:
 
     @staticmethod
     def GetGuess(guess : chr):
-        if( not WordGuesser.guessedLetters.__contains__(guess)):
+        if not WordGuesser.guessedLetters.__contains__(guess):
             WordGuesser.guessedLetters.__iadd__(guess)
             HangingShape.instance.RenderNext(WordGuesser.chosenWord.__contains__(guess))
             WordPresenter.instance.GetLetterToPresent(WordGuesser.guessedLetters, WordGuesser.chosenWord)
@@ -42,7 +42,7 @@ class WordGuesser:
         lettersInWord = list(WordGuesser.chosenWord)
 
         for i in range(len(lettersInWord)):
-            if( not WordGuesser.guessedLetters.__contains__(lettersInWord[i])):
+            if not WordGuesser.guessedLetters.__contains__(lettersInWord[i]):
                 lettersInWord.pop(i)
 
         return lettersInWord
@@ -51,7 +51,7 @@ class WordGuesser:
     def rightAndWrongLetters():
         letters = {[]}
         letters.clear()
-        for i in len(WordGuesser.chosenWord):
+        for i in range(len(WordGuesser.chosenWord)):
             letters.add([WordGuesser.chosenWord[i], WordGuesser.guessedLetters.__contains__(WordGuesser.chosenWord[i])])
         return letters
 
