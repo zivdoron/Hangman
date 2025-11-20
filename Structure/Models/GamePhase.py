@@ -50,7 +50,7 @@ class Game:
     def GameLoop(self):
         HangingShape()
         pInput = PlayerInput()
-        pInput.SetOnContinueToNextTurn(lambda: self.GoToNextTurn())
+        pInput.SetContinueToNextTurn(lambda: self.GoToNextTurn())
         wordPresenter = WordPresenter()
         print("Hello and welcome to my Hangman game.")
         pInput.chooseKeyMapping(5)
