@@ -12,11 +12,12 @@ from Structure.Models import WordsRandomizer
 
 class PlayerInput(BasePlayerInput) :
 
-    OnGoToNextTurn = Delegator()
+    OnGoToNextTurn = Delegator() #change to
     def GetGuess(self):
         print("Guess a letter")
-        letter = input()
-        WordGuesser.GetGuess(letter.lower()[0])
+        letter = self.WaitForPlayerResponse()
+        if letter is not None:
+            WordGuesser.GetGuess(letter.lower()[0])
 
     def AddWord(word):
         WordsRandomizer.AddWordToLibrary(word)
@@ -24,12 +25,11 @@ class PlayerInput(BasePlayerInput) :
     def ContinueToNextTurn(self):
         self.OnGoToNextTurn
 
-    def SetContinueToNextTurn(self, func):
+    def SetOnContinueToNextTurn(self, func):
         self.OnGoToNextTurn.setdelegate(func)
 
 
-    def WaitForPlayerResponse(self):
-        currInput = input()
+
 
     def assignkeymaps(self, chosenMap):
         chosenMap = chosenMap.lower()
