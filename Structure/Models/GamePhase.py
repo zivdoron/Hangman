@@ -11,11 +11,14 @@ class LevelPhase(Enum):
     EndedGuessing = 1
     StartedGuessingTurn = 2
     OutOfGuess = 3
+    Won = 4
+    Lost = 5
 
 class GlobalPhase(Enum):
     InGame = 0
     StartingMenu = 1
     Settings = 2
+    Quit = 3
 
 DEFAULT_SPACING = "\n\n\n"
 class Game:
@@ -47,7 +50,7 @@ class Game:
     def GameLoop(self):
         HangingShape()
         pInput = PlayerInput()
-        pInput.SetContinueToNextTurn(lambda: self.GoToNextTurn())
+        pInput.SetOnContinueToNextTurn(lambda: self.GoToNextTurn())
         wordPresenter = WordPresenter()
         print("Hello and welcome to my Hangman game.")
         pInput.chooseKeyMapping(5)
@@ -55,17 +58,23 @@ class Game:
         self.showRules()
         print(DEFAULT_SPACING)
         HangingShape.instance.SetDefaultNumOfTries()
+        while self.gamePhase != GlobalPhase.InGame:
+            self.IngameLoop(pInput)
 
+
+    def IngameLoop(self, pInput):
         print("Let's begin the game!")
         WordGuesser.RandomizeANewWord()
         while True:
             if WordGuesser.CheckWin():
+                self.levelPhase = LevelPhase.Won
                 print("YOU WiN! MABRUK!")
                 break
             if WordGuesser.CheckLose():
-                print("Nice try, let's try again...") #add result summary and back to word randomization.
-            pInput.GetGuess()
+                self.levelPhase = LevelPhase.Lost
+                print("Nice try, let's try again...")  # add result summary and back to word randomization.
 
+            pInput.GetGuess()
 
 
     def showRules(self):
