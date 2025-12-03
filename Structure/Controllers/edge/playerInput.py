@@ -12,14 +12,12 @@ from Structure.Models import WordsRandomizer
 
 class PlayerInput(BasePlayerInput) :
 
-    OnGoToNextTurn = Delegator()
+    OnGoToNextTurn = Delegator() #change to
     def GetGuess(self):
         print("Guess a letter")
-        letter = input()
-        if letter.__len__() == 0:
-            self.GetGuess()
-            return
-        WordGuesser.GetGuess(letter.lower()[0])
+        letter = self.WaitForPlayerResponse()
+        if letter is not None:
+            WordGuesser.GetGuess(letter.lower()[0])
 
     def AddWord(word):
         WordsRandomizer.AddWordToLibrary(word)
@@ -27,12 +25,11 @@ class PlayerInput(BasePlayerInput) :
     def ContinueToNextTurn(self):
         self.OnGoToNextTurn
 
-    def SetContinueToNextTurn(self, func):
+    def SetOnContinueToNextTurn(self, func):
         self.OnGoToNextTurn.setdelegate(func)
 
 
-    def WaitForPlayerResponse(self):
-        currInput = input()
+
 
     def assignkeymaps(self, chosenMap):
         chosenMap = chosenMap.lower()
@@ -57,14 +54,12 @@ class PlayerInput(BasePlayerInput) :
 
     def chooseKeyMapping(self, retryCount):
         self.showKeyMapping()
-        self._inputForChangingMap(retryCount)
+        self.inputForChangingMap(retryCount)
 
-
-    def _inputForChangingMap(self, maxRetries, count: int = 0):
+    @classmethod
+    def inputForChangingMap(cls, maxRetries, count: int = 0):
         print("Please choose your desired keymaps")
-        inp = input()
-        if not self.assignkeymaps(inp) and count <= maxRetries :
-            self._inputForChangingMap(maxRetries, count + 1)
+        if not cls.assignkeymaps(input()) and count <= maxRetries : cls.inputForChangingMap(maxRetries, count+1)
         if(count > maxRetries) :
             print("Fine... I'll stick with standard then.")
-            self.assignkeymaps("normal")
+            cls.assignkeymaps("normal")
