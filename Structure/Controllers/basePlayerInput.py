@@ -21,14 +21,16 @@ class KeyMaps(Enum):
 
 class BasePlayerInput :
 
-    map = KeyMaps.Normal
+    map : KeyMaps
     inputEvents = { ("Approved", EventDispatcher()) , ("next turn", EventDispatcher()) , ("help", EventDispatcher()) , ("change input", EventDispatcher())}
 
-    def __init__(self, args : {()}):
-        if args in self.inputEvents:
-           for arg,event in args,self.inputEvents :
-               if  event.Key == arg.Key:
-                   EventDispatcher(event).insertListener(arg, event.Key, False)
+    def __init__(self, args : {()} = None, kmap = KeyMaps.Normal):
+        self.map = kmap
+        if args is not None :
+            if args in self.inputEvents :
+                for arg,event in args,self.inputEvents :
+                    if  event.Key == arg.Key :
+                        EventDispatcher(event).insertListener(arg, event.Key, False)
 
     def GetKey(self, charInput) :
         return self.map.value
