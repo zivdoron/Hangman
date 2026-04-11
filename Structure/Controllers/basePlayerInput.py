@@ -36,11 +36,16 @@ class BasePlayerInput :
         return self.map.value
 
 
-    def WaitForPlayerResponse(self, isPlayerAllowedToOrder : bool):
+    def WaitForPlayerResponse(self, isPlayerAllowedToOrder : bool, isPlayerAllowedToUseShortkeys : bool):
         if DEBUG: print("player order")
         currInput = input()
         if isPlayerAllowedToOrder:
             if currInput.lower() in map.__dict__.keys():
                 EventDispatcher( self.inputEvents.__dict__[map.__dict__[currInput]]).dispatch()
                 return None
+        if isPlayerAllowedToUseShortkeys:
+            key = currInput.lower()[0]
+            for shortcut in map.__dict__.keys():
+                if shortcut == key:
+                    EventDispatcher(self.inputEvents.__dict__[map.__dict__.get(key)]).dispatch()
         return currInput

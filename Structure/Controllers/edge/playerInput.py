@@ -1,6 +1,6 @@
 import logging
 from logging import DEBUG
-from idlelib.delegator import Delegator
+from eventpy import eventdispatcher
 from typing import  Optional
 
 from Structure.Controllers.basePlayerInput import BasePlayerInput, KeyMaps
@@ -12,7 +12,7 @@ from Structure.Models import WordsRandomizer
 
 class PlayerInput(BasePlayerInput) :
 
-    OnGoToNextTurn = Delegator() #change to
+    OnGoToNextTurn : eventdispatcher #change to
     def GetGuess(self):
         print("Guess a letter")
         letter = self.WaitForPlayerResponse()
@@ -23,7 +23,7 @@ class PlayerInput(BasePlayerInput) :
         WordsRandomizer.AddWordToLibrary(word)
 
     def ContinueToNextTurn(self):
-        self.OnGoToNextTurn
+        self.OnGoToNextTurn()
 
     def SetOnContinueToNextTurn(self, func):
         self.OnGoToNextTurn.setdelegate(func)
