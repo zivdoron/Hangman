@@ -22,7 +22,7 @@ class KeyMaps(Enum):
 class BasePlayerInput :
 
     map : KeyMaps
-    inputEvents = { ("Approved", EventDispatcher()) , ("next turn", EventDispatcher()) , ("help", EventDispatcher()) , ("change input", EventDispatcher())}
+    inputEvents = { "Approved": EventDispatcher(), "next turn": EventDispatcher(), "help": EventDispatcher(), "change input": EventDispatcher() }
 
     def __init__(self, args : {()} = None, kmap = KeyMaps.Normal):
         self.map = kmap
@@ -36,7 +36,7 @@ class BasePlayerInput :
         return self.map.value
 
 
-    def WaitForPlayerResponse(self, isPlayerAllowedToOrder : bool, isPlayerAllowedToUseShortkeys : bool):
+    def WaitForPlayerResponse(self, isPlayerAllowedToOrder: bool = True, isPlayerAllowedToUseShortkeys: bool = True):
         if DEBUG: print("player order")
         currInput = input()
         if isPlayerAllowedToOrder:

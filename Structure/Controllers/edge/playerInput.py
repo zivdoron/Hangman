@@ -1,32 +1,31 @@
 import logging
 from logging import DEBUG
-from eventpy import eventdispatcher
-from typing import  Optional
+from eventpy.eventdispatcher import EventDispatcher
+from typing import Optional
 
 from Structure.Controllers.basePlayerInput import BasePlayerInput, KeyMaps
 from Structure.Models import WordGuesser
 from Structure.Models import WordsRandomizer
 
 
+_NEXT_TURN_EVENT = 0  # event type key, like an enum value in C#
 
+class PlayerInput(BasePlayerInput):
 
-class PlayerInput(BasePlayerInput) :
+    def __init__(self):
+        self.OnGoToNextTurn = EventDispatcher()  # like: public event Action OnGoToNextTurn
 
-    OnGoToNextTurn : eventdispatcher #change to
     def GetGuess(self):
         print("Guess a letter")
         letter = self.WaitForPlayerResponse()
         if letter is not None:
             WordGuesser.GetGuess(letter.lower()[0])
 
-    def AddWord(word):
-        WordsRandomizer.AddWordToLibrary(word)
-
     def ContinueToNextTurn(self):
-        self.OnGoToNextTurn()
+        self.OnGoToNextTurn.dispatch(_NEXT_TURN_EVENT)  # like: OnGoToNextTurn?.Invoke()
 
     def SetOnContinueToNextTurn(self, func):
-        self.OnGoToNextTurn.setdelegate(func)
+        self.OnGoToNextTurn.appendListener(_NEXT_TURN_EVENT, func)  # like: OnGoToNextTurn += func
 
 
 
@@ -56,10 +55,9 @@ class PlayerInput(BasePlayerInput) :
         self.showKeyMapping()
         self.inputForChangingMap(retryCount)
 
-    @classmethod
-    def inputForChangingMap(cls, maxRetries, count: int = 0):
+    def inputForChangingMap(self, maxRetries, count: int = 0):
         print("Please choose your desired keymaps")
-        if not cls.assignkeymaps(input()) and count <= maxRetries : cls.inputForChangingMap(maxRetries, count+1)
+        if not self.assignkeymaps(input()) and count <= maxRetries : self.inputForChangingMap(maxRetries, count+1)
         if(count > maxRetries) :
             print("Fine... I'll stick with standard then.")
-            cls.assignkeymaps("normal")
+            self.assignkeymaps("normal")
